@@ -2,18 +2,19 @@
 
 var mongoose = require('mongoose');
 
-const server = 'epiphany-cluster-shard-00-00-lcdgl.azure.mongodb.net:27017,epiphany-cluster-shard-00-01-lcdgl.azure.mongodb.net:27017,epiphany-cluster-shard-00-02-lcdgl.azure.mongodb.net:27017/test?ssl=true&replicaSet=epiphany-cluster-shard-0&authSource=admin&retryWrites=true';
+const server = 'epiphany-cluster-lcdgl.azure.mongodb.net';
 const database = 'Transparencity';
 const user = 'transparencity-admin';
 const password = '5C1H6SkZqtkvInDn';
 
-// mongodb://transparencity-admin:<PASSWORD>
-//@epiphany-cluster-shard-00-00-lcdgl.azure.mongodb.net:27017,epiphany-cluster-shard-00-01-lcdgl.azure.mongodb.net:27017,
-//epiphany-cluster-shard-00-02-lcdgl.azure.mongodb.net:27017/test?ssl=true&replicaSet=epiphany-cluster-shard-0&
-//authSource=admin&retryWrites=true/${database}
-mongoose.connect(`mongodb://${user}:${password}@${server}/${database}`);
+// mongodb+srv://transparencity-admin:<PASSWORD>@epiphany-cluster-lcdgl.azure.mongodb.net/test?retryWrites=true
+mongoose.connect(`mongodb+srv://${user}:${password}@${server}/${database}?retryWrites=true`);
 
 var UserSchema = new mongoose.Schema({
+    userId: {
+        type: Number,
+        required: true
+    },
     name: {
         type: String,
         required: true,
