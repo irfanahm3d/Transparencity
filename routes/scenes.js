@@ -5,12 +5,13 @@ var SceneModel = require('../models/scene.model');
 
 /*
  * GET all scenes.
- * Limit to 10
- * TODO: paging of data
  */
 router.get('', function (req, res) {
-    SceneModel.find()
-        .limit(10)
+    var offset = 0;
+    if (req.body.offset)
+        offset = req.body.offset;
+
+    SceneModel.paginate({}, { offset: offset, limit: 10 })
         .then(docs => { res.json(docs); })
         .catch(err => { res.status(500).json(err); });
 });
@@ -36,7 +37,11 @@ router.get('/userId', function (req, res) {
         return res.status(400).send('Missing URL parameter: userId');
     }
 
-    SceneModel.find({ userId: req.body.userId })
+    var offset = 0;
+    if (req.body.offset)
+        offset = req.body.offset;
+
+    SceneModel.paginate({ userId: req.body.userId }, { offset: offset, limit: 10})
         .then(docs => { res.json(docs); })
         .catch(err => { res.status(500).json(err); });
 });
@@ -49,7 +54,11 @@ router.get('/issueCategory', function (req, res) {
         return res.status(400).send('Missing URL parameter: issueCategory');
     }
 
-    SceneModel.find({ issueCategory: req.body.issueCategory })
+    var offset = 0;
+    if (req.body.offset)
+        offset = req.body.offset;
+
+    SceneModel.paginate({ issueCategory: req.body.issueCategory }, { offset: offset, limit: 10 })
         .then(docs => { res.json(docs); })
         .catch(err => { res.status(500).json(err); });
 });
@@ -104,6 +113,29 @@ router.put('/scene', function (req, res) {
             }
 
             res.status(200).send(doc);
+        })
+        .catch(err => {
+            res.status(500).json(err);
+        });
+});
+
+/*
+ * Delete a scene
+ * DELETE scene
+ */
+router.delete('/scene', function (req, res) {
+    if (!req.body.sceneId) {
+        return res.status(400).send('Missing parameter: sceneId');
+    }
+
+    SceneModel.findByIdAndDelete(
+        req.body.sceneId,
+        function (err, doc) {
+            if (err) {
+                return res.status(500).send(err);
+            }
+
+            res.status(202).send(doc);
         })
         .catch(err => {
             res.status(500).json(err);

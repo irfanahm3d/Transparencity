@@ -8,7 +8,7 @@ const user = 'transparencity-admin';
 const password = '5C1H6SkZqtkvInDn';
 
 // mongodb+srv://transparencity-admin:<PASSWORD>@epiphany-cluster-lcdgl.azure.mongodb.net/test?retryWrites=true
-mongoose.connect(`mongodb+srv://${user}:${password}@${server}/${database}?retryWrites=true`);
+mongoose.connect(`mongodb+srv://${user}:${password}@${server}/${database}?retryWrites=true`, { useNewUrlParser: true });
 
 var UserSchema = new mongoose.Schema({
     userId: {

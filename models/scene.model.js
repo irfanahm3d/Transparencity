@@ -1,6 +1,7 @@
 ﻿'use strict';
 
 var mongoose = require('mongoose');
+var paginate = require('mongoose-paginate');
 
 const server = 'epiphany-cluster-lcdgl.azure.mongodb.net';
 const database = 'Transparencity';
@@ -8,9 +9,7 @@ const user = 'transparencity-admin';
 const password = '5C1H6SkZqtkvInDn';
 
 // mongodb+srv://transparencity-admin:<PASSWORD>@epiphany-cluster-lcdgl.azure.mongodb.net/test?
-mongoose.connect(`mongodb+srv://${user}:${password}@${server}/${database}?retryWrites=true`);
-
-var objectId = mongoose.Types.ObjectId;
+mongoose.connect(`mongodb+srv://${user}:${password}@${server}/${database}?retryWrites=true`, { useNewUrlParser: true });
 
 var LocationSchema = new mongoose.Schema({
     latitide: {
@@ -42,5 +41,6 @@ var SceneSchema = new mongoose.Schema({
 	},
 	description: String
 });
+SceneSchema.plugin(paginate);
 
 module.exports = mongoose.model('Scene', SceneSchema);
